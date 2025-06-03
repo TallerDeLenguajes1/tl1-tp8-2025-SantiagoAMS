@@ -1,7 +1,10 @@
-﻿internal class Program
+﻿using Microsoft.VisualBasic;
+
+internal class Program
 {
     private static List<Tarea> pendientes = new List<Tarea>();
     private static List<Tarea> realizadas = new List<Tarea>();
+    private static ConsoleColor colorOriginal = Console.ForegroundColor;
     private static void Main(string[] args)
     {
         const int NUMERO_TAREAS = 10;
@@ -31,10 +34,10 @@
             ));
         }
 
-        ConsoleColor ori = Console.ForegroundColor;
         int opc = 0;
         while (opc != 4)
         {
+            Console.Clear();
             Console.WriteLine("========================================");
             Console.WriteLine("   1  -  Listar tareas");
             Console.WriteLine("   2  -  Transferir tarea a realizadas");
@@ -51,7 +54,7 @@
                     Listar("----- Listando Realizadas -----", realizadas);
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Listar("----- Listando Pendientes -----", pendientes);
-                    Console.ForegroundColor = ori;
+                    Console.ForegroundColor = colorOriginal;
                     break;
                 case 2:
 
@@ -93,26 +96,48 @@
 
     static void Transferir()
     {
-        string busca = Utilidades.LeerString("Ingresa la descripcion de la tarea a transferir");
-        Tarea t = pendientes.FirstOrDefault(t => t.Descripcion.ToLower().Contains(busca.ToLower()));
+        string desc = Utilidades.LeerString("Ingresa la descripcion de la tarea a transferir");
+        Tarea t = pendientes.FirstOrDefault(t => t.Descripcion.ToLower().Contains(desc.ToLower()));
         if (t == null)
         {
-            Utilidades.PrintError($"No se ha encontrado la tarea con descripcion \"{busca}\"");
-            return;
+            Utilidades.PrintError($"No se ha encontrado la tarea con descripcion \"{desc}\"...\nBuscando una similar");
+            t = pendientes.FirstOrDefault(t => t.Descripcion.ToLower().Contains(desc.ToLower()));
+            if (t == null)
+            {
+                Utilidades.PrintError($"No hay coincidencias...");
+                return;
+            }
         }
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("Tarea encontrada");
         Listar(t);
+        Console.ForegroundColor = colorOriginal;
 
+        if (Utilidades.LeerBooleano("¿Mover a la lista de finalizadas?"))
+        {
+            pendientes.Remove(t);
+            realizadas.Add(t);
+            
+        }
     }
 
     static void BuscarPorDescripcion(List<Tarea> tarea)
     {
         string desc = Utilidades.LeerString("Ingresa la descripcion de la tarea a buscar");
-        Tarea t = pendientes.FirstOrDefault(t => t.Descripcion.ToLower().Contains(desc.ToLower()));
+        Tarea t = pendientes.FirstOrDefault(t => t.Descripcion.Equals(desc));
         if (t == null)
         {
-            Utilidades.PrintError($"No se ha encontrado la tarea con descripcion \"{desc}\"");
-            return;
+            Utilidades.PrintError($"No se ha encontrado la tarea con descripcion \"{desc}\"...\nBuscando una similar");
+            t = pendientes.FirstOrDefault(t => t.Descripcion.ToLower().Contains(desc.ToLower()));
+            if (t == null)
+            {
+                Utilidades.PrintError($"No hay coincidencias...");
+                return;
+            }
         }
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("Tarea encontrada");
         Listar(t);
+        Console.ForegroundColor = colorOriginal;
     }
 }

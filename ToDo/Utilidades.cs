@@ -47,6 +47,13 @@ public static class Utilidades
         Console.WriteLine(text);
         Console.ForegroundColor = old;
     }
+    public static void PrintSuccess(string text = "Acción realizada exitosamente")
+    {
+        ConsoleColor old = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(text);
+        Console.ForegroundColor = old;
+    }
 
     public static string LeerString(string texto = "Ingresa una cadena")
     {
@@ -55,5 +62,17 @@ public static class Utilidades
         return ret ?? "";
     }
 
+    public static bool LeerBooleano(string pregunta = "")
+    {
+        Console.Write(pregunta + "  [SI/YES/1 - NO/0]\n> ");
+
+        string s = Console.ReadLine();
+        if (s is null)
+        {
+            return false;
+        }
+        s = s.ToUpper();
+        return s == "SI" || s == "S" || s == "Y" || s == "YES" || s == "1";
+    }
 }
 
