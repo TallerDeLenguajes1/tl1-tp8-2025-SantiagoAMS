@@ -18,13 +18,15 @@ string[] ts = [
 ];
 for (int i = 0; i < NUMERO_TAREAS; i++)
 {
+    
     pendientes.Add(new Tarea(
         i,
         ts[i],
-        Math.Min(Math.Max(10, rngesus.Next()), 100)
+        Math.Min(Math.Max(10, rngesus.Next()%100), 100)
     ));
 }
 
+ConsoleColor ori = Console.ForegroundColor;
 int opc = 0;
 while (opc != 4)
 {
@@ -40,9 +42,14 @@ while (opc != 4)
     switch (opc)
     {
         case 1:
-            Listar();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Listar("----- Listando Realizadas -----", realizadas);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Listar("----- Listando Pendientes -----", pendientes);
+            Console.ForegroundColor = ori;
             break;
         case 2:
+
             Transferir();
             break;
         case 3:
@@ -51,9 +58,10 @@ while (opc != 4)
         case 4:
             continue;
         default:
+            Utilidades.PrintError("Opción inesperada");
             break;
-
     }
+    Utilidades.Pausa();
 }
 
 static void Listar(string titulo, List<Tarea> lista)
@@ -62,16 +70,16 @@ static void Listar(string titulo, List<Tarea> lista)
     Console.WriteLine(" ID\t | Duración | Descripción");
     foreach (Tarea t in lista)
     {
-        Console.WriteLine($"{t.TareaID}\t");
+        Console.WriteLine($" {t.TareaID}\t | {t.Duracion} | {t.Descripcion}");
     }
 }
 
 static void Transferir()
 {
-
+    Console.WriteLine("Transferir");
 }
 
 static void BuscarPorDescripcion()
 {
-
+    Console.WriteLine("Buscar");
 }

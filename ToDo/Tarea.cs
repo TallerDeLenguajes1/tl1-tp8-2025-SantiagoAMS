@@ -15,6 +15,7 @@ public class Tarea
             if (value >= 10 && value <= 100)
             {
                 duracion = value;
+                return;
             }
             throw new Exception("El valor debe estar entre [10,100]...");
         }
