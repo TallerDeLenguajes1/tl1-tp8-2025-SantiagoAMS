@@ -8,8 +8,6 @@ internal class Program
     private static void Main(string[] args)
     {
         const int NUMERO_TAREAS = 10;
-
-
         Random rngesus = new Random();
 
         string[] ts = [
@@ -65,7 +63,7 @@ internal class Program
                     break;
                 case 4:
                     BuscarPorDescripcion(pendientes);
-                    continue;
+                    break;
                 case 5:
                     continue;
                 default:
@@ -97,6 +95,11 @@ internal class Program
 
     static void Transferir()
     {
+        if (pendientes.Count() == 0)
+        {
+            Utilidades.PrintError("La lista de pendientes esta vacía...");
+            return;
+        }
         string desc = Utilidades.LeerString("Ingresa la descripcion de la tarea a transferir");
         Tarea t = pendientes.FirstOrDefault(t => t.Descripcion.Equals(desc));
         if (t == null)
@@ -120,6 +123,11 @@ internal class Program
 
     static void BuscarPorDescripcion(List<Tarea> tareas)
     {
+        if (pendientes.Count() == 0)
+        {
+            Utilidades.PrintError("La lista de pendientes esta vacía...");
+            return;
+        }
 
         string desc = Utilidades.LeerString("Ingresa la descripcion de la tarea a buscar");
         Tarea t = pendientes.FirstOrDefault(t => t.Descripcion.Equals(desc));
@@ -134,11 +142,16 @@ internal class Program
             }
         }
         ListarQueSeEncontro(t);
-        Utilidades.Pausa();
     }
 
     static void BuscarPorID(List<Tarea> tareas)
     {
+        if (pendientes.Count() == 0)
+        {
+            Utilidades.PrintError("La lista de pendientes esta vacía...");
+            return;
+        }
+        
         int id = Utilidades.LeerEntero("Ingresa la ID de la tarea a buscar");
         Tarea t = pendientes.FirstOrDefault(t => t.TareaID == id);
         if (t == null)
@@ -147,7 +160,6 @@ internal class Program
             return;
         }
         ListarQueSeEncontro(t);
-        Utilidades.Pausa();
     }
 
     private static void ListarQueSeEncontro(Tarea t)
