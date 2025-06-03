@@ -48,6 +48,12 @@ public static class Utilidades
         Console.ForegroundColor = old;
     }
 
-   
+    public static string LeerString(string texto = "Ingresa una cadena")
+    {
+        Console.Write($"\n{texto}\n> ");
+        string ret = Console.ReadLine();
+        return ret ?? "";
+    }
+
 }
 
