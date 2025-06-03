@@ -35,14 +35,15 @@ internal class Program
         }
 
         int opc = 0;
-        while (opc != 4)
+        while (opc != 5)
         {
             Console.Clear();
             Console.WriteLine("========================================");
             Console.WriteLine("   1  -  Listar tareas");
             Console.WriteLine("   2  -  Transferir tarea a realizadas");
-            Console.WriteLine("   3  -  Buscar tarea por descripcion");
-            Console.WriteLine("   4  -  Salir del programa");
+            Console.WriteLine("   3  -  Buscar tarea por ID");
+            Console.WriteLine("   4  -  Buscar tarea por descripcion");
+            Console.WriteLine("   5  -  Salir del programa");
             Console.WriteLine("========================================");
 
             opc = Utilidades.LeerEntero("Ingresa una opcion");
@@ -57,13 +58,15 @@ internal class Program
                     Console.ForegroundColor = colorOriginal;
                     break;
                 case 2:
-
                     Transferir();
                     break;
                 case 3:
-                    BuscarPorDescripcion(pendientes);
+                    BuscarPorID(pendientes);
                     break;
                 case 4:
+                    BuscarPorDescripcion(pendientes);
+                    continue;
+                case 5:
                     continue;
                 default:
                     Utilidades.PrintError("Opción inesperada");
@@ -71,8 +74,6 @@ internal class Program
             }
             Utilidades.Pausa();
         }
-
-
     }
 
     static void Listar(Tarea t)
@@ -90,14 +91,14 @@ internal class Program
         Console.WriteLine(" ID\t | Duración | Descripción");
         foreach (Tarea t in lista)
         {
-            Console.WriteLine($" {t.TareaID}\t | {t.Duracion}      | {t.Descripcion}");
+            Console.WriteLine($" {t.TareaID}\t | {t.Duracion}       | {t.Descripcion}");
         }
     }
 
     static void Transferir()
     {
         string desc = Utilidades.LeerString("Ingresa la descripcion de la tarea a transferir");
-        Tarea t = pendientes.FirstOrDefault(t => t.Descripcion.ToLower().Contains(desc.ToLower()));
+        Tarea t = pendientes.FirstOrDefault(t => t.Descripcion.Equals(desc));
         if (t == null)
         {
             Utilidades.PrintError($"No se ha encontrado la tarea con descripcion \"{desc}\"...\nBuscando una similar");
@@ -108,21 +109,18 @@ internal class Program
                 return;
             }
         }
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Tarea encontrada");
-        Listar(t);
-        Console.ForegroundColor = colorOriginal;
-
+        ListarQueSeEncontro(t);
         if (Utilidades.LeerBooleano("¿Mover a la lista de finalizadas?"))
         {
             pendientes.Remove(t);
             realizadas.Add(t);
-            
+            Utilidades.PrintSuccess("Tarea transferida exitosamente");
         }
     }
 
-    static void BuscarPorDescripcion(List<Tarea> tarea)
+    static void BuscarPorDescripcion(List<Tarea> tareas)
     {
+
         string desc = Utilidades.LeerString("Ingresa la descripcion de la tarea a buscar");
         Tarea t = pendientes.FirstOrDefault(t => t.Descripcion.Equals(desc));
         if (t == null)
@@ -135,9 +133,29 @@ internal class Program
                 return;
             }
         }
+        ListarQueSeEncontro(t);
+        Utilidades.Pausa();
+    }
+
+    static void BuscarPorID(List<Tarea> tareas)
+    {
+        int id = Utilidades.LeerEntero("Ingresa la ID de la tarea a buscar");
+        Tarea t = pendientes.FirstOrDefault(t => t.TareaID == id);
+        if (t == null)
+        {
+            Utilidades.PrintError($"No hay coincidencias...");
+            return;
+        }
+        ListarQueSeEncontro(t);
+        Utilidades.Pausa();
+    }
+
+    private static void ListarQueSeEncontro(Tarea t)
+    {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Tarea encontrada");
         Listar(t);
         Console.ForegroundColor = colorOriginal;
+        
     }
 }
