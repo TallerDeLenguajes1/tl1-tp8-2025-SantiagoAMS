@@ -1,13 +1,15 @@
 public class Operacion
 {
-    private double resultadoAnterior; // Almacena el resultado previo al cálculo actual 
+    private double resultadoAnterior ; // Almacena el resultado previo al cálculo actual 
+    public double ResultadoAnterior{ get => resultadoAnterior; set => resultadoAnterior = value; }
+
     private double nuevoValor; //El valor con el que se opera sobre el resultadoAnterior
-    private TipoOperacion operacion { get; set; } // El tipo de operación realizada 
+    public TipoOperacion Tipo { get; set; } // El tipo de operación realizada 
     public double Resultado
     {
         get
         {
-            switch (operacion)
+            switch (Tipo)
             {
                 case TipoOperacion.Suma:
                     return resultadoAnterior + nuevoValor;
@@ -24,10 +26,12 @@ public class Operacion
     }
     // Propiedad pública para acceder al nuevo valor utilizado en la operación 
     public double NuevoValor;
-    
 
-    // Constructor u otros métodos necesarios para inicializar y gestionar la operación 
-    // ... 
+    public Operacion(double val, TipoOperacion tipo)
+    {
+        this.resultadoAnterior = val;
+        this.Tipo = tipo;
+    }
 
     public enum TipoOperacion
     {
