@@ -3,36 +3,37 @@ namespace EspacioCalculadora;
 public class Calculadora
 {
 
-    public readonly List<Operacion> Historial = new List<Operacion>();
-    private double dato = 0;
+    private readonly List<Operacion> Historial = [];
+
     public void Sumar(double termino)
     {
-        Historial.Add(new Operacion(dato, termino, Operacion.TipoOperacion.Suma));
-        dato += termino;
+        Historial.Add(new Operacion(Resultado, termino, Operacion.TipoOperacion.Suma));
     }
 
     public void Restar(double termino)
     {
-        Historial.Add(new Operacion(dato, termino, Operacion.TipoOperacion.Resta));
-        dato -= termino;
+        Historial.Add(new Operacion(Resultado, termino, Operacion.TipoOperacion.Resta));
     }
 
     public void Multiplicar(double termino)
     {
-        Historial.Add(new Operacion(dato, termino, Operacion.TipoOperacion.Multiplicacion));
-        dato *= termino;
+        Historial.Add(new Operacion(Resultado, termino, Operacion.TipoOperacion.Multiplicacion));
     }
 
     public void Dividir(double termino)
     {
-        Historial.Add(new Operacion(dato, termino, Operacion.TipoOperacion.Division));
-        dato /= termino;
+        Historial.Add(new Operacion(Resultado, termino, Operacion.TipoOperacion.Division));
     }
 
-    public void Limpiar()
+    public void Limpiar() //Deja el valor en 0 SIN LIMPIAR EL HISTORIAL
     {
-        Historial.Add(new Operacion(dato, 0, Operacion.TipoOperacion.Limpiar));
-        dato = 0;
+        Historial.Add(new Operacion(Resultado, 0, Operacion.TipoOperacion.Limpiar));
+    }
+
+
+    public void LimpiarHistorial() //Esta funcion adicional permite limpiar el historial (junto al resultado)
+    {
+        Historial.Clear();
     }
 
     public double Resultado
@@ -64,10 +65,12 @@ public class Calculadora
             var o = Historial[i];
             if (o.Tipo == Operacion.TipoOperacion.Limpiar)
             {
-                Console.WriteLine($"{i}: {o.Resultado}");
+                Console.WriteLine($"{i + 1}: {o.Resultado}");
                 continue;
             }
-            Console.WriteLine($"{i}: {o.ResultadoAnterior} {o.TipoToString()} {o.NuevoValor} = {o.Resultado}");
+            Console.WriteLine($"{i + 1}: {o.ResultadoAnterior} {o.TipoToString()} {o.NuevoValor} = {o.Resultado}");
         }
     }
+
+
 }

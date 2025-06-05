@@ -18,6 +18,11 @@ internal class Program
         Console.WriteLine(c.Resultado);
 
         c.ImprimirHistorial();
+        c.Limpiar();
+        c.Sumar(15);
+        c.LimpiarHistorial();
+        c.Sumar(2);
+        c.ImprimirHistorial();
         
     }
 }
